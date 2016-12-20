@@ -1,0 +1,18 @@
+{
+  "name": "rxjsdemo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -h",
+    "test-watch": "mocha -w -b"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "3.5.0",
+    "chai-rx": "0.0.2",
+    "mocha": "3.2.0",
+    "rx": "4.1.0"
+  }
+}
