@@ -380,12 +380,12 @@ describe("and other things", function () {
         return res.should.emit(marbles.from(targetMarbles, values));
       });
       it("should be possible to switch to another Observable when the first one finishes", ()=>{
-        // When failingsource finishes (|) another Observable can provide elements.
-        const failingsource  = "ab----|";
+        // When finishingSource finishes (|) another Observable can provide elements.
+        const finishingSource  = "ab----|";
         const fallbacksource = "e-f|"; //cold, the hot example is in the error fallback test.
         const targetMarbles  = "ab-----e-f|";//notice how the cold events keep the time differential
         const scheduler = new Rx.TestScheduler();
-        const xs = marbles.hotWith(scheduler, failingsource, values);
+        const xs = marbles.hotWith(scheduler, finishingSource, values);
         const fallback = marbles.coldWith(scheduler, fallbacksource, values);
         const res = scheduler.startScheduler(() => xs/*change here*/);
         return res.should.emit(marbles.from(targetMarbles, values));
