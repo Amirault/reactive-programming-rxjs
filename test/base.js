@@ -11,7 +11,7 @@ describe("categorie", function () {
     it("nom du test", function () {
         // Les effets de l'opérateur: (ici: rien)
         const source = "(ab)---cde|";
-        const target = "(ab)---cde|)";
+        const target = "(ab)---cde|";
 
         const scheduler = new Rx.TestScheduler();
         const xs = marbles.hotWith(scheduler, source, values);

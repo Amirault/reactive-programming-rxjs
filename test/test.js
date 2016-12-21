@@ -104,8 +104,8 @@ describe("and other things", function () {
       it("should be possible to be interested only on the completion", function () {
         const failingSource = "a-b--c-!";
         const failingTarget = "-------!";
-        const workingSource = "a-b--c-d!";
-        const workingTarget = "--------!";
+        const workingSource = "a-b--c-d|";
+        const workingTarget = "--------|";
         function observableOf(source){
           const scheduler = new Rx.TestScheduler();
           const xs = marbles.hotWith(scheduler, source, values);
@@ -115,8 +115,8 @@ describe("and other things", function () {
         const failingRes = observableOf(failingSource);
 
         return [
-          workingRes.should.emit(marbles.from(workingTarget, {T: true, F:false})),
-          failingRes.should.emit(marbles.from(failingTarget, {T: true, F:false}))
+          workingRes.should.emit(marbles.from(workingTarget, {})),
+          failingRes.should.emit(marbles.from(failingTarget, {}))
         ];
       });
       it("should be possible to take only the first element", function () {
@@ -187,7 +187,7 @@ describe("and other things", function () {
         const res = scheduler.startScheduler(() => items/*change here*/);
         return res.should.emit(marbles.from(target, values));
       });
-      it("should be possible to take the elements until an observable emits something", function () {
+      it("should be possible to skip the elements until an observable emits something", function () {
         const source = "abcde|";
         const emiter = "--a---"
         const target = "---de|)";
