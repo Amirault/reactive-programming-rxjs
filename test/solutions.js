@@ -112,8 +112,8 @@ describe("and other things", function () {
       it("should be possible to be interested only on the completion", function () {
         const failingSource = "a-b--c-!";
         const failingTarget = "-------!";
-        const workingSource = "a-b--c-d!";
-        const workingTarget = "--------!";
+        const workingSource = "a-b--c-d|";
+        const workingTarget = "--------|";
         function observableOf(source){
           const scheduler = new Rx.TestScheduler();
           const xs = marbles.hotWith(scheduler, source, values);
@@ -123,8 +123,8 @@ describe("and other things", function () {
         const failingRes = observableOf(failingSource);
 
         return [
-          workingRes.should.emit(marbles.from(workingTarget, {T: true, F:false})),
-          failingRes.should.emit(marbles.from(failingTarget, {T: true, F:false}))
+          workingRes.should.emit(marbles.from(workingTarget, {})),
+          failingRes.should.emit(marbles.from(failingTarget, {}))
         ];
       });
       it("should be possible to take only the first element", function () {
@@ -195,7 +195,7 @@ describe("and other things", function () {
         const res = scheduler.startScheduler(() => items.skipWhile(predicate));
         return res.should.emit(marbles.from(target, values));
       });
-      it("should be possible to take the elements until an observable emits something", function () {
+      it("should be possible to skip the elements until an observable emits something", function () {
         const source = "abcde|";
         const emiter = "--a---"
         const target = "---de|)";
@@ -388,12 +388,12 @@ describe("and other things", function () {
         return res.should.emit(marbles.from(targetMarbles, values));
       });
       it("should be possible to switch to another Observable when the first one finishes", ()=>{
-        // When failingsource finishes (|) another Observable can provide elements.
-        const failingsource  = "ab----|";
+        // When finishingSource finishes (|) another Observable can provide elements.
+        const finishingSource  = "ab----|";
         const fallbacksource = "e-f|"; //cold, the hot example is in the error fallback test.
         const targetMarbles  = "ab-----e-f|";//notice how the cold events keep the time differential
         const scheduler = new Rx.TestScheduler();
-        const xs = marbles.hotWith(scheduler, failingsource, values);
+        const xs = marbles.hotWith(scheduler, finishingSource, values);
         const fallback = marbles.coldWith(scheduler, fallbacksource, values);
         const res = scheduler.startScheduler(() => xs.concat(fallback));
         return res.should.emit(marbles.from(targetMarbles, values));
