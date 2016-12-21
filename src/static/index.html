@@ -1,0 +1,44 @@
+<html>
+<head><title>bid on stuff</title>
+<script>
+    var socket;
+    if (window.WebSocket) {
+        socket = new WebSocket("ws://localhost:9000/");
+        socket.onmessage = function (event) {
+            var chat = document.getElementById('chat');
+            chat.innerHTML = chat.innerHTML + event.data + "<br />";
+        };
+        socket.onclose=function (event) {
+            var chat = document.getElementById('chat');
+            chat.innerHTML = chat.innerHTML + "Connection closed<br />";
+        };
+    } else {
+        alert("It's 2016 man stop living in the past and get a browser with websockets");
+    }
+
+    function send(message) {
+        if (window.WebSocket && socket.readyState == WebSocket.OPEN) {
+            socket.send(message);
+        } else {
+            alert("The socket is not open.");
+        }
+        return false;
+    }
+</script>
+<style type="text/css">
+    label,#bid{
+        display: inline;
+        width: 100px;
+    }
+</style>
+</head>
+<body>
+    <h1>Web Socket Chat</h1>
+    <form onsubmit="return false;" class="chatform" action="">
+        <label for="bid">Bidding:</label>
+        <input type="text" name="amount" id="bid"  onkeypress="if(event.keyCode==13) { send(this.form.amount.value); this.value='' } " />
+    </form>
+    <div id="chat" style="width: 100%;" ></div>
+
+</body>
+</html>
